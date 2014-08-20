@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 import base64, fractions, optparse, random
-import gmpy
+import gmpy2
 
 from pyasn1.codec.der import encoder
 from pyasn1.type.univ import *
@@ -58,8 +58,8 @@ class RSA:
         self.e = e
 
         if p and q:
-            assert gmpy.is_prime(p), 'p is not prime'
-            assert gmpy.is_prime(q), 'q is not prime'
+            assert gmpy2.is_prime(p), 'p is not prime'
+            assert gmpy2.is_prime(q), 'q is not prime'
 
             self.p = p
             self.q = q
@@ -74,12 +74,12 @@ class RSA:
         self.n = self.p * self.q
 
         phi = (self.p - 1) * (self.q - 1)
-        self.d = gmpy.invert(self.e, phi)
+        self.d = gmpy2.invert(self.e, phi)
 
         # CRT-RSA precomputation
         self.dP = self.d % (self.p - 1)
         self.dQ = self.d % (self.q - 1)
-        self.qInv = gmpy.invert(self.q, self.p)
+        self.qInv = gmpy2.invert(self.q, self.p)
 
     def to_pem(self):
         """
